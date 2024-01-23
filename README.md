@@ -34,3 +34,15 @@
         }
     }
 
+
+Before compiling the project, we need to remember to set the CPU architecture to x64 since we are injecting into a 64-bit process.
+
+Note that 64-bit versions of Windows can run both 32 and 64-bit processes. This means that we could face four potential migration paths: 64-bit -> 64-bit, 64-bit -> 32-bit, 32-bit -> 32-bit and 32-bit -> 64-bit.
+
+The first three paths will work as expected. However, the fourth (32-bit -> 64-bit) will fail since CreateRemoteThread does not support this.
+
+One workaround (which is what advanced implants like Meterpreter do) is to execute the call directly in assembly. The technique involves performing a translation from 32-bit to 64-bit long mode inside the 32-bit process. 
+
+After getting shell, The process ID indicates that the Meterpreter shell is indeed running inside explorer.exe.
+
+We will be able to launch our Meterpreter shellcode directly inside explorer.exe, which means that even if the original process is killed, the shell will live on.
